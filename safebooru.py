@@ -10,7 +10,7 @@ import os
 import re
 
 global count
-count = 0
+count = 1
 lock = threading.Lock()
 
 def img_resize(img):
