@@ -1,13 +1,7 @@
-import urllib2
 from requests_oauthlib import OAuth1Session
 import json
-import requests
-from datetime import datetime
 import urllib,urllib2
-import lxml.html
-from PIL import Image
 import time, sqlite3
-import threading
 
 folder = 'twitter/'
 
