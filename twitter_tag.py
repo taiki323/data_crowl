@@ -55,7 +55,7 @@ def tweet_search(search_word, oath_key_dict, datetime):
         "q": unicode(search_word),
         #"lang": "ja",
         "result_type": "recent",
-        "count": "2000",
+        "count": "100",
         "until": datetime
         }
     oath = create_oath_session(oath_key_dict)
@@ -66,12 +66,13 @@ def tweet_search(search_word, oath_key_dict, datetime):
     tweets = json.loads(responce.text)
     return tweets
 
-count = 420
-datetime = "2017-4-30_00:00:00_JST"
+count =1
+datetime = "2017-4-30_21:00:00_JST"
 for i in range(40):
     tweets = tweet_search("#paintschainer", oath_key_dict, datetime)
     if(len(tweets["statuses"]) == 0):
-        time.sleep(16)
+        print i
+        time.sleep(960)
         continue
     for tweet in tweets["statuses"]:
         try:
@@ -80,7 +81,6 @@ for i in range(40):
             continue
         for url in img_url:
             filename = folder + "PaintsChainer" + str(count) + ".jpg"
-            image_download(url[u'media_url'],filename)
 
             conn = sqlite3.connect('twitter.db')
             c = conn.cursor()
@@ -89,8 +89,8 @@ for i in range(40):
             if c.fetchone() is not None:
                 print("skip")
                 continue
-            query = 'INSERT INTO twitter(url) VALUES("' + url[u'media_url'] +'")'
-            c.execute(query)
+            image_download(url[u'media_url'], filename) #DL
+            c.execute('INSERT INTO twitter(name, url) VALUES(?,?)', (filename, url[u'media_url']))
             conn.commit()
             conn.close()
             print url[u'media_url']
